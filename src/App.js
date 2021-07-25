@@ -287,10 +287,6 @@ function App() {
     let index = users.findIndex(user => user.email === currentEmail)
     let user = users[index]
     let products = user.cart || []
-
-    if(user === undefined){
-      return
-    }
     
     return products.reduce((acc, val) => (acc + val.price), 0)
     
