@@ -152,15 +152,6 @@ function App() {
     setShowRegister(false)
 
     login()
-
-    setName("")
-    setEmail("")
-    setPassword("")
-    setEmailLogged("")
-    setCountry("")
-    setState("")
-    setCity("")
-    setStreet("")
   }
 
   function login() {
@@ -308,7 +299,7 @@ function App() {
     let city = user["city"] || ""
     let street = user["street"] || ""
 
-    return street + " - " + city + " - " +  " - " + state + " - " + country
+    return street + " - " + city + " - " + state + " - " + country
   }
 
   return (
