@@ -1,7 +1,7 @@
 # Mercado de Skins de Valorant
 
 ## O que é?
-O Mercado de Skins de Valorant é uma aplicação desenvolvida por mim, Matheus Andrade, para o Desafio 2 do Programa Hiring Coders promovido pela VTEX em parceira com a Gama Academy. O objetivo do desafio é construir um sistema e-commerce para inventário de produtos e dados de clientes.
+O Mercado de Skins de Valorant é uma aplicação desenvolvida por mim, Matheus Andrade, para o Desafio 2 - Gestão de Cadastros do Programa Hiring Coders promovido pela VTEX em parceira com a Gama Academy. O objetivo do desafio é construir um sistema e-commerce para inventário de produtos e dados de clientes.
 
 ## Requisitos do Desafio
 - Os dados de clientes, endereços e produtos devem estar devidamente estruturados
