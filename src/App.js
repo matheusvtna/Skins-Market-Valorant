@@ -1,6 +1,6 @@
-import { Button, Col, Container, Row, Form, FormControl, Carousel, Modal } from 'react-bootstrap';
-import { FiChevronDown, FiChevronUp, FiMapPin, FiPhone, FiMail } from 'react-icons/fi';
-import { FiTwitter, FiInstagram, FiGithub, FiLinkedin, FiShoppingCart, FiShoppingBag } from 'react-icons/fi';
+import { Button, Col, Container, Row, Form, FormControl, Carousel, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { FiChevronDown, FiChevronUp, FiMapPin, FiPhone, FiMail, FiShoppingCart, FiShoppingBag, FiCheck } from 'react-icons/fi';
+import { FiTwitter, FiInstagram, FiGithub, FiLinkedin } from 'react-icons/fi';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -221,10 +221,40 @@ function App() {
     localStorage.setItem('users', JSON.stringify(users));
     
     setCart(newCart)
-    notifyOk("Parabéns!" + 'A skin ' + skin.name +  " foi inserida no carrinho.")
+    notifyOk("Parabéns! " + 'A skin ' + skin.name +  " foi inserida no carrinho.")
     setProduct("")
     
   }
+
+  function removeItem(skin) {
+    // Nome do usuário é vazio
+    if(logged === ""){
+      notifyError("Você precisar estar logado para adicionar itens no carrinho!")
+      return
+    }
+
+    let users = JSON.parse(localStorage.getItem('users') || "[]")
+    let index = users.findIndex(user => user.email === email)
+    let user = users[index]
+
+    let products = user.cart || []
+    let productIndex = products.findIndex(product => product.name === skin.name)
+    let newProducts = [...products]
+
+    if(productIndex === -1) {
+      return
+    }
+
+    newProducts.splice(productIndex, 1);    
+
+    let newCart = newProducts
+    users[index].cart = newCart
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    setCart(newCart)
+    notifyError('A skin ' + skin.name +  " foi removida no carrinho.")
+    setProduct("")
+  } 
 
   function loginClicked() {
     if(logged !== "") {
@@ -263,6 +293,22 @@ function App() {
     
     return products.reduce((acc, val) => (acc + val.price), 0)
     
+  }
+
+  function getAddress() {
+    if(logged === "") {
+      return ""
+    }
+
+    let users = JSON.parse(localStorage.getItem('users') || "[]")
+    let index = users.findIndex(user => user.email === email)
+    let user = users[index]
+    let country = user["country"] || ""
+    let state = user["state"] || ""
+    let city = user["city"] || ""
+    let street = user["street"] || ""
+
+    return street + " - " + city + " - " +  " - " + state + " - " + country
   }
 
   return (
@@ -438,34 +484,48 @@ function App() {
             <Row className="mt-5"> {
               cart.map( skin => (
                 <Col xs={6} sm={6} md={3}>
-                  <div className='date-box mb-5'>
-                    <img
-                      className="d-block w-100"
-                      src={skin.image}
-                      alt={skin.name}
-                    />
-                    <h5 className="title text-center">
-                      {skin.name}
-                    </h5>
-            
-                    <div className="d-flex flex-row justify-content-center text-center align-items-center">                       
-                      <p className="mx-2 mb-0" style={{color:"white"}}>{skin.price}</p>
-                      <img 
-                        src={logo}
-                        style={{width: "16px", height: "16px"}}
+                    <OverlayTrigger
+                        placement="top"
+                        delay={{ show: 100, hide: 200 }}
+                        overlay={(props) => (<Tooltip id="button-tooltip" {...props}>Clique no produto para removê-lo do carrinho</Tooltip>)}
+                    >
+                    <div className='date-box mb-5' onClick={() => removeItem(skin)}>
+                      <img
+                        className="d-block w-100"
+                        src={skin.image}
+                        alt={skin.name}
                       />
-                    </div>
+                      <h5 className="title text-center">
+                        {skin.name}
+                      </h5>
+              
+                      <div className="d-flex flex-row justify-content-center text-center align-items-center">                       
+                        <p className="mx-2 mb-0" style={{color:"white"}}>{skin.price}</p>
+                        <img 
+                          src={logo}
+                          style={{width: "16px", height: "16px"}}
+                        />
+                      </div>
 
-                  </div> 
+                    </div>
+                    </OverlayTrigger>
+
                 </Col>
+                
               ))}
             </Row>
         </div>
 
-        <Row className="justify-content-end">
-          <div>
+        <div> {
+          
+          getAmount() === 0 ?
+          <Row className=" text-center justify-content-center py-5">
+            <h1 className="text-white">Seu carrinho esta vazio...</h1>
+          </Row>
+          :
+          <>
             Valor Total em Valorant Points: {
-              <div className="d-flex flex-row justify-content-center text-right align-items-center">                       
+              <div className="d-flex flex-row justify-content-end text-right align-items-center">                       
                 <p className="mx-2 mb-0 title text-right" style={{color:"white"}}>{ getAmount() }</p>
                 <img 
                   src={logo}
@@ -475,16 +535,23 @@ function App() {
             }
             
             Valor Total em Reais: {
-              <div className="d-flex flex-row justify-content-center text-right align-items-center">                       
-              <p className="mx-2 mb-0 title text-right" style={{color:"white"}}>{(100*getAmount()).toLocaleString('pt-br', {minimumFractionDigits: 2}) + " Reais"}</p>
+              <div className="d-flex flex-row justify-content-end text-right align-items-center">                       
+              <p className="title text-right" style={{color:"white"}}>{(0.25*getAmount()).toLocaleString('pt-br', {minimumFractionDigits: 2}) + " Reais"}</p>
             </div>
             }
-              
-          </div>
 
-
-        </Row>
-
+            <Row className="justify-content-end">
+              <Button className="down-button" onClick={() => notifyOk("Compra Finalizada! Em poucos dias as suas skins estarão na sua conta e você receberá brindes no seu endereço " + getAddress() + ".")}>
+                <Row className="justify-content-center align-items-center mx-2 my-1">
+                  <h5 className="ml-2">Finalizar Compra</h5>
+                  <FiCheck color="#ffffff" size={42} className="ml-2 pb-1"/>
+                </Row>
+              </Button>
+            </Row>
+          </>
+          }
+          
+        </div>
 
       </Container>
     </div>
@@ -505,20 +572,37 @@ function App() {
     <div className='py-5' style={{backgroundColor: '#0E1921'}}>
       <Container>
         <Row className='d-flex justify-content-around align-items-center'>
-          <Col id='info' className='pr-5 justify-content-around' xl={4} lg={4} md={6} sm={12} xs={12}>
-            <Row className='align-items-center' xs='justify-content-center' sm='justify-content-center' md='justify-content-center' lg='justify-content-start'>
+
+          <Col id='info' className='pr-5 justify-content-around d-none d-md-block' xl={4} lg={4} md={6} sm={12} xs={12}>
+            <Row className='align-items-center'>
               <FiMapPin color="#FC4854" size={15} className="mr-4"/>
               <p className='text-white pt-3'> Av. Abecê - Centro, Recife - PE, Brasil</p>
             </Row>
-            <Row className='align-items-center' xs='justify-content-center' sm='justify-content-center' md='justify-content-center' lg='justify-content-start'>
+            <Row className='align-items-center'>
               <FiPhone color="#FC4854" size={15} className="mr-4"/>
               <p className='text-white pt-3'> (81) 9xxxx-xxxx</p>
             </Row>
-            <Row className='align-items-center' xs='justify-content-center' sm='justify-content-center' md='justify-content-center' lg='justify-content-start'>
+            <Row className='align-items-center'>
               <FiMail color="#FC4854" size={15} className="mr-4"/>
               <p className='text-white pt-3'> matheusxxxx@xxxx.com</p>
             </Row>           
           </Col>
+
+          <Col id='info' className='pr-5 justify-content-center d-md-none' xl={4} lg={4} md={6} sm={12} xs={12}>
+            <Row className='align-items-center justify-content-center'>
+              <FiMapPin color="#FC4854" size={15} className="mr-4"/>
+              <p className='text-white pt-3'> Av. Abecê - Centro, Recife - PE, Brasil</p>
+            </Row>
+            <Row className='align-items-center justify-content-center'>
+              <FiPhone color="#FC4854" size={15} className="mr-4"/>
+              <p className='text-white pt-3'> (81) 9xxxx-xxxx</p>
+            </Row>
+            <Row className='align-items-center justify-content-center'>
+              <FiMail color="#FC4854" size={15} className="mr-4"/>
+              <p className='text-white pt-3'> matheusxxxx@xxxx.com</p>
+            </Row>           
+          </Col>
+
           <Col id='social' className='justify-content-start' xl={4} lg={4} md={6} sm={12} xs={12}>
             <Row className='py-3 justify-content-center'>
               <a href='https://github.com/matheusvtna/' target="_blank"> 
