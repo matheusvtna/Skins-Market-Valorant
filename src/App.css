@@ -28,7 +28,7 @@
   color: #61dafb;
 }
 
-.play-button {
+.login-button {
   border-radius: 0.25rem;
   border: 0;
   padding: 0.5rem 0.5rem;
@@ -36,6 +36,16 @@
   border-color:#FC4854!important;
   font-weight: bold;
   color:white;
+}
+
+.register-button {
+  border-radius: 0.25rem;
+  border: 0;
+  padding: 0.5rem 0.5rem;
+  background-color: white!important;
+  border-color: white!important;
+  font-weight: bold;
+  color:#FC4854!important;
 }
 
 .down-button {

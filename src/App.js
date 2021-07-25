@@ -1,86 +1,300 @@
-import { Button, Col, Container, Row, Form, FormControl, Carousel } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, FormControl, Carousel, Modal } from 'react-bootstrap';
 import { FiChevronDown, FiChevronUp, FiMapPin, FiPhone, FiMail } from 'react-icons/fi';
 import { FiTwitter, FiInstagram, FiGithub, FiLinkedin, FiShoppingCart, FiShoppingBag } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 import background from './assets/backgroundLayer.png';
 import backgroundClean from './assets/backgroundSquares.png';
 import logo from './assets/logo.png';
 import title from './assets/titleFrame.png'
-import skins from './assets/skins.jpg'
 import vandalSublime from './assets/VandalSublime.png'
-import phantomOni from './assets/PhantomOni.png'
+import vandalColmeia from './assets/VandalColmeia.png'
 import bulldogGlitchpop from './assets/BulldogGlitchpop.png'
 import judgeGlitchpop from './assets/JudgeGlitchpop.png'
+import ghostSilence from './assets/GhostSilence.png'
+import frenzyClitchpop from './assets/FrenzyGlitchpop.png'
+import sheriffJett from './assets/SheriffJett.png'
+import buckyDiversao from './assets/BuckyDiversao.png'
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [gunType, setGunType] = useState("all")
-
+  
   const data = [
     {
-      image: vandalSublime,
-      category: ["all", "rifle"],
-      name: "Vandal Sublime",
-      price: "1500 Valorant Points"
+      image: frenzyClitchpop,
+      category: "pistol",
+      name: "Frenzy Glitchpop",
+      price: "1000 Valorant Points"
     },
     {
-      image: phantomOni,
-      category: ["all", "rifle"],
-      name: "Phantom Oni",
-      price: "2150 Valorant Points"
+      image: ghostSilence,
+      category: "pistol",
+      name: "Ghost Silencialmas",
+      price: "995 Valorant Points"
+    },
+    {
+      image: sheriffJett,
+      category: "pistol",
+      name: "Sheriff Jett",
+      price: "300 Valorant Points"
     },
     {
       image: bulldogGlitchpop,
-      category: ["all", "rifle"],
+      category: "rifle",
       name: "Bulldog Glitchpop",
       price: "3475 Valorant Points"
     },
     {
+      image: vandalColmeia,
+      category: "rifle",
+      name: "Vandal Colmeia",
+      price: "1500 Valorant Points"
+    },
+    {
+      image: vandalSublime,
+      category: "rifle",
+      name: "Vandal Sublime",
+      price: "2150 Valorant Points"
+    },
+    {
+      image: buckyDiversao,
+      category: "shotgun",
+      name: "Bucky Divertida",
+      price: "775 Valorant Points"
+    },
+    {
       image: judgeGlitchpop,
-      category: ["all", "shotgun"],
+      category: "shotgun",
       name: "Judge Glitchpop",
       price: "1720 Valorant Points"
     }
   ]
 
+  // Personal info
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [country, setCountry] = useState("")
+  const [state, setState] = useState("")
+  const [city, setCity] = useState("")
+  const [street, setStreet] = useState("")
+  const [logged, setLogged] = useState("")
+
+  // Products and Cart
+  const [cart, setCart] = useState([])
+  const [product, setProduct] = useState("")
+  const [guns, setGuns] = useState(data)
+  
+  // Modals
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
+  // Notifications
+  const notifyOk = (msg) => toast(msg, {
+    duration: 4000,
+    position: 'top-center',
+    // Styling
+    style: {},
+    className: '',
+    // Custom Icon
+    icon: '👏',
+    // Change colors of success/error/loading icon
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+
+  const notifyError = (msg) => toast(msg, {
+    duration: 4000,
+    position: 'top-center',
+    // Styling
+    style: {},
+    className: '',
+    // Custom Icon
+    icon: '❌',
+    // Change colors of success/error/loading icon
+    iconTheme: {
+      primary: '#000',
+      secondary: '#fff',
+    },
+    ariaProps: {
+      role: 'status',
+      'aria-live': 'polite',
+    },
+  });
+
   function createUser() {
     
     let users = JSON.parse(localStorage.getItem('users') || "[]")
 
-    if(name === "" || email === "") {
-      alert("Você precisa inserir nome e email para se cadastrar!")
+    if([name, email, password, country, state, city, street].includes("")) {
+      console.log("campo vazio")
+      notifyError("Você precisa inserir todos os dados para se cadastrar!")
       return
     }
 
     if(users.find(user => user.email === email)){
-      alert("Este email já foi cadastrado anteriormente.")
+      notifyError("Este email já está sendo utilizado.")
       return
     }
   
-    localStorage.setItem('users', JSON.stringify([...users, {name, email, product: {}}]));
-    alert("Parabéns, " + name + "! Agora você está cadastrado em nosso mercado de skins. ")
+    localStorage.setItem('users', JSON.stringify([...users, {name, email, password, country, state, city, street, cart: []}]));
+    notifyOk("Parabéns, " + name + "! Você foi cadastrado com sucesso.")
+    setShowRegister(false)
 
     setName("")
     setEmail("")
+    setPassword("")
+    setCountry("")
+    setState("")
+    setCity("")
+    setStreet("")
+  }
+
+  function login() {
+    let users = JSON.parse(localStorage.getItem('users') || "[]")
+    let index = users.findIndex(user => user.email === email)
+
+    if(index != -1){
+      let user = users[index]
+      if(user.password === password) {
+        notifyOk("Parabéns, " + user.name + '! Login realizado com sucesso.')
+        setShowLogin(false)
+        setLogged(user.name)
+        return
+      }
+    }
+
+    notifyError("As credenciais estão erradas.")
+
+    setName("")
+    setEmail("")
+    setPassword("")
+    setCountry("")
+    setState("")
+    setCity("")
+    setStreet("")
+
+  }
+
+  function updateGuns(gunType) {
+    let newGuns = gunType === "all" ? data : data.filter(gun => gun.category === gunType)
+    setGuns(newGuns)
+  }
+
+
+  function insertProduct(skin) {
+    let products = JSON.parse(localStorage.getItem('cart') || "[]")
+    
+    let newCart = [...products, skin]
+    localStorage.setItem('cart', JSON.stringify(newCart));
+    
+    setCart(newCart)
+    notifyOk("Parabéns!" + 'A skin ' + skin.name +  " foi inserida no carrinho.")
+    setProduct("")
+    
+  }
+
+  function loginClicked() {
+    if(logged !== "") {
+      return
+    }
+    setShowLogin(true)
+  }
+
+  function registerOrLogoutClicked() {
+    if(logged !== "") {
+      setLogged("")
+      setName("")
+      setEmail("")
+      setPassword("")
+      setCountry("")
+      setState("")
+      setCity("")
+      setStreet("")
+      return
+    } 
+
+    setShowRegister(true)
   }
 
   return (
     <div className="root-page">
+
+    <Modal show={showLogin} centered onHide={() => setShowLogin(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Faça o seu login!</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="d-flex justify-content-center">
+        <Form className='d-flex flex-column justify-content-center align-items-center pt-1 pb-3' style={{width: "75%"}}>
+          <div>Faça o login para comprar novas skins no nosso mercado.</div>
+            
+          <Form.Control type="email" placeholder="E-mail" className="mt-3 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
+          <Form.Control type="password" placeholder="Senha" className="mt-3 register-input" value={password} onChange={e => setPassword(e.target.value)}/>
+
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowLogin(false)}>
+          Fechar
+        </Button>
+        <Button variant="primary" className="login-button" onClick={() => login()}>
+          Entrar
+        </Button>
+      </Modal.Footer>
+    </Modal>
+
+    <Modal show={showRegister} centered onHide={() => setShowRegister(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Faça o seu cadastro!</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="d-flex justify-content-center">
+        <Form className='d-flex flex-column justify-content-center align-items-center pt-1 pb-3' style={{width: "75%"}}>
+          <div>Insira os seus dados pessoais para entrar no nosso mercado.</div>
+            
+          <Form.Control type="name" placeholder="Nome" className="mt-3 register-input" value={name} onChange={e => setName(e.target.value)}/>
+          <Form.Control type="email" placeholder="E-mail" className="mt-3 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
+          <Form.Control type="password" placeholder="Senha" className="mt-3 register-input" value={password} onChange={e => setPassword(e.target.value)}/>
+          <Form.Control type="country" placeholder="País" className="mt-3 register-input" value={country} onChange={e => setCountry(e.target.value)}/>
+          <Form.Control type="state" placeholder="Estado" className="mt-3 register-input" value={state} onChange={e => setState(e.target.value)}/>
+          <Form.Control type="city" placeholder="Cidade" className="mt-3 register-input" value={city} onChange={e => setCity(e.target.value)}/>
+          <Form.Control type="street" placeholder="Rua, com Número" className="mt-3 register-input" value={street} onChange={e => setStreet(e.target.value)}/>
+
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowRegister(false)}>
+          Fechar
+        </Button>
+        <Button variant="primary" className="login-button" onClick={() => createUser()}>
+          Cadastrar
+        </Button>
+      </Modal.Footer>
+    </Modal>
+
     <div className="page-header align-items-center" style={{ backgroundImage: `url(${background})`, backgroundColor: '#0E1921'}}>
       <Container className="flex header-container justify-content-center pb-5">
-        <Row className="d-flex py-5 pb-4 justify-content-between w-100 align-center">
-          <img src={logo} className="logo align-center mx-5" />
+        <Row className="d-flex py-5 pb-4 justify-content-between w-100 align-center" key={logged}>
           <a href='https://playvalorant.com/pt-br/' target="_blank"> 
-            <Button className="play-button">
-              JOGUE AGORA
-            </Button>   
+            <img src={logo} className="logo align-center mx-5" />
           </a>
+          <Col className="d-flex justify-content-end align-items-center">
+            <Button className="register-button mr-2" onClick={() => registerOrLogoutClicked()}>
+              {logged !== "" ? "SAIR" : "CADASTRAR"}
+            </Button>
+            <Button className="login-button" onClick={() => loginClicked()}>
+              {logged !== "" ? "Olá, " +  logged : "ENTRAR"}
+            </Button>
+          </Col>
+             
         </Row>
 
         <Row className="d-flex py-5 align-content">
@@ -118,18 +332,18 @@ function App() {
           </Col>
           <Col className="justify-content-center" xs={12} sm={12} md={4}>
             <Form className='d-flex flex justify-content-center' style={{width:'100%'}}>            
-              <Form.Control as="select" className="register-input" placeholder="Tipo de Arma" onChange={e => setGunType(e.target.value)}>
-                <option value="all" selected={gunType === "all"}>Todas as armas</option>
-                <option value="pistol" selected={gunType === "pistol"}>Pistolas</option>
-                <option value="shotgun" selected={gunType === "shotgun"}>Escopetas</option>
-                <option value="rifle" selected={gunType === "rifle"}>Fuzis</option>
+              <Form.Control as="select" className="register-input" placeholder="Tipo de Arma" onChange={e => updateGuns(e.target.value)}>
+                <option value="all" >Todas as armas</option>
+                <option value="pistol" >Armas Leves</option>
+                <option value="shotgun">Escopetas</option>
+                <option value="rifle">Fuzis</option>
               </Form.Control>
             </Form>
           </Col>  
         </Row>
         
-        <Carousel interval={null} className="d-flex flex-col pt-2"> {
-          data.filter(gun => gun.category.find(category => category === gunType)).map(skin => (
+        <Carousel interval={null} key={JSON.stringify(guns)} className="d-flex flex-col pt-2" fade={false}> {
+          guns.map(skin => (
             <Carousel.Item className="justify-content-center">
               <img
                 className="d-block w-100"
@@ -139,8 +353,14 @@ function App() {
               <Carousel.Caption className="">
                 <Col className="">
                   <h2 className="title">{skin.name}</h2>
-                  <p>{"$" + skin.price}</p>
-                  <Button className="down-button mb-3">
+                  <div className="flex-row"> 
+                    <img 
+                      src={logo}
+                      style={{width: "16px"}}
+                    />
+                    <p>{skin.price}</p>
+                  </div>
+                  <Button className="down-button mb-3" onClick={() => insertProduct(skin)}>
                     <Row className="mx-2 my-1 justify-content-center align-items-center">
                       <FiShoppingCart color="#ffffff" size={12} className="mr-4"/>
                       <p5 className="">Adicionar ao Carrinho</p5>
@@ -157,8 +377,8 @@ function App() {
           <a href='#cart'>
             <Button className="down-button">
               <Row className="justify-content-center align-items-center mx-2 my-1">
-                <h5>Ver Carrinho</h5>
-                <FiChevronDown color="#ffffff" size={20} className="ml-3 pb-1"/>
+                <h5 className="ml-2">Ver Carrinho</h5>
+                <FiChevronDown color="#ffffff" size={20} className="ml-2 pb-1"/>
               </Row>
             </Button>
           </a>
@@ -167,25 +387,42 @@ function App() {
 
       </Container>
 
-      <div id="cart">
-        <Row className="justify-content-center">      
-          <Col className='d-flex justify-content-center align-items-center pb-3' xs={12} sm={12} md={6} lg={6} xl={6}>
-            <Form className='d-flex flex-column justify-content-center align-items-center pt-1 pb-5'>            
-              <Form.Control type="name" placeholder="Nome" className="mt-4 register-input" value={name} onChange={e => setName(e.target.value)}/>
-              <Form.Control type="email" placeholder="E-mail" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
-              <Form.Control type="password" placeholder="Senha" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
-              <Button className="mt-4 down-button" onClick={() => createUser()}>
-                CADASTRAR
-              </Button>
-            </Form>
-            
-          </Col>
-                  
-        </Row>
-      </div>
-    </div>
+      <Container className="cart-container py-5" style={{color: '#0E1921'}}>
+        <div id="cart" className="pt-5">
+            <h1 className="px-4 w-100 title text-left">
+              Carrinho de Skins
+            </h1>
 
-    
+            <Col xs={6} sm={6} md={3}> {
+
+            cart.map( skin => (
+              <img
+                className="d-block w-100"
+                src={skin.image}
+                alt={skin.name}
+              />
+              ))}
+            </Col>
+
+            
+
+          {/* <Row className="justify-content-center">      
+            <Col className='d-flex justify-content-center align-items-center pb-3' xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Form className='d-flex flex-column justify-content-center align-items-center pt-1 pb-5'>            
+                <Form.Control type="name" placeholder="Nome" className="mt-4 register-input" value={name} onChange={e => setName(e.target.value)}/>
+                <Form.Control type="email" placeholder="E-mail" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
+                <Form.Control type="password" placeholder="Senha" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
+                <Button className="mt-4 down-button" onClick={() => createUser()}>
+                  CADASTRAR
+                </Button>
+              </Form>
+              
+            </Col>
+                    
+          </Row> */}
+        </div>
+      </Container>
+    </div>
 
     <div className="d-flex valorant-logo justify-content-center" style={{backgroundColor: '#FC4854'}}>
       <Row className='d-flex justify-content-center align-items-start py-5'>
@@ -250,6 +487,8 @@ function App() {
         </div>
       </Container>
     </div>
+    
+    <Toaster />
 
   </div>
   );
