@@ -21,7 +21,7 @@ Para acessar o Mercado de Skins de Valorant, basta acessar este [link](https://m
 
 
 ***
-# About The App Creation Using `npm create-react-app valorant-skins`
+# About The App Creation Using `npx create-react-app valorant-skins`
 
 # Getting Started with Create React App
 
