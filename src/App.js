@@ -77,6 +77,7 @@ function App() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [currentEmail, setEmailLogged] = useState("")
   const [country, setCountry] = useState("")
   const [state, setState] = useState("")
   const [city, setCity] = useState("")
@@ -153,6 +154,7 @@ function App() {
     setName("")
     setEmail("")
     setPassword("")
+    setEmailLogged("")
     setCountry("")
     setState("")
     setCity("")
@@ -169,6 +171,8 @@ function App() {
         notifyOk("Parabéns, " + user.name + '! Login realizado com sucesso.')
         setShowLogin(false)
         setLogged(user.name)
+        setEmailLogged(user.email)
+        setCart(user.cart)
         return
       }
     }
@@ -178,6 +182,7 @@ function App() {
     setName("")
     setEmail("")
     setPassword("")
+    setEmailLogged("")
     setCountry("")
     setState("")
     setCity("")
@@ -192,10 +197,26 @@ function App() {
 
 
   function insertProduct(skin) {
-    let products = JSON.parse(localStorage.getItem('cart') || "[]")
-    
+    // Nome do usuário é vazio
+    if(logged === ""){
+      notifyError("Você precisar estar logado para adicionar itens no carrinho!")
+      return
+    }
+
+    let users = JSON.parse(localStorage.getItem('users') || "[]")
+    let index = users.findIndex(user => user.email === email)
+    let user = users[index]
+
+    let products = user.cart || []
+
+    if(products.find(product => product.name === skin.name)) {
+      notifyError("Você já adicionou essa skin no seu carrinho...")
+      return
+    }
+
     let newCart = [...products, skin]
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    users[index].cart = newCart
+    localStorage.setItem('users', JSON.stringify(users));
     
     setCart(newCart)
     notifyOk("Parabéns!" + 'A skin ' + skin.name +  " foi inserida no carrinho.")
@@ -213,6 +234,7 @@ function App() {
   function registerOrLogoutClicked() {
     if(logged !== "") {
       setLogged("")
+      setEmailLogged("")
       setName("")
       setEmail("")
       setPassword("")
@@ -220,6 +242,7 @@ function App() {
       setState("")
       setCity("")
       setStreet("")
+      setCart([])
       return
     } 
 
@@ -392,34 +415,17 @@ function App() {
             <h1 className="px-4 w-100 title text-left">
               Carrinho de Skins
             </h1>
-
+            <Row className="justify-content-center">
             <Col xs={6} sm={6} md={3}> {
-
-            cart.map( skin => (
-              <img
-                className="d-block w-100"
-                src={skin.image}
-                alt={skin.name}
-              />
-              ))}
-            </Col>
-
-            
-
-          {/* <Row className="justify-content-center">      
-            <Col className='d-flex justify-content-center align-items-center pb-3' xs={12} sm={12} md={6} lg={6} xl={6}>
-              <Form className='d-flex flex-column justify-content-center align-items-center pt-1 pb-5'>            
-                <Form.Control type="name" placeholder="Nome" className="mt-4 register-input" value={name} onChange={e => setName(e.target.value)}/>
-                <Form.Control type="email" placeholder="E-mail" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
-                <Form.Control type="password" placeholder="Senha" className="mt-4 register-input" value={email} onChange={e => setEmail(e.target.value)}/>
-                <Button className="mt-4 down-button" onClick={() => createUser()}>
-                  CADASTRAR
-                </Button>
-              </Form>
-              
-            </Col>
-                    
-          </Row> */}
+              cart.map( skin => (
+                <img
+                  className="d-block w-100"
+                  src={skin.image}
+                  alt={skin.name}
+                />
+                ))}
+              </Col>
+            </Row>
         </div>
       </Container>
     </div>
