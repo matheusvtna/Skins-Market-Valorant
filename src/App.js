@@ -197,7 +197,7 @@ function App() {
     }
 
     let users = JSON.parse(localStorage.getItem('users') || "[]")
-    let index = users.findIndex(user => user.email === email)
+    let index = users.findIndex(user => user.email === currentEmail)
     let user = users[index]
 
     let products = user.cart || []
@@ -225,7 +225,7 @@ function App() {
     }
 
     let users = JSON.parse(localStorage.getItem('users') || "[]")
-    let index = users.findIndex(user => user.email === email)
+    let index = users.findIndex(user => user.email === currentEmail)
     let user = users[index]
 
     let products = user.cart || []
@@ -256,8 +256,11 @@ function App() {
 
   function registerOrLogoutClicked() {
     if(logged !== "") {
+      // Logout
       setLogged("")
       setEmailLogged("")
+      
+      // Clean info
       setName("")
       setEmail("")
       setPassword("")
@@ -265,7 +268,10 @@ function App() {
       setState("")
       setCity("")
       setStreet("")
+      
+      // Clean cart
       setCart([])
+      
       return
     } 
 
@@ -278,7 +284,7 @@ function App() {
     }
 
     let users = JSON.parse(localStorage.getItem('users') || "[]")
-    let index = users.findIndex(user => user.email === email)
+    let index = users.findIndex(user => user.email === currentEmail)
     let user = users[index]
     let products = user.cart || []
     
@@ -292,7 +298,7 @@ function App() {
     }
 
     let users = JSON.parse(localStorage.getItem('users') || "[]")
-    let index = users.findIndex(user => user.email === email)
+    let index = users.findIndex(user => user.email === currentEmail)
     let user = users[index]
     let country = user["country"] || ""
     let state = user["state"] || ""
