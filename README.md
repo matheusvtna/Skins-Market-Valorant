@@ -17,7 +17,7 @@ A proposta do Mercado de Skins de Valorant é simular uma página do jogo de tir
 No site, o usuário pode cadastrar os seus dados de nome, email, senha e campos de endereço (país, estado, cidade e logradouro). Após entrar com o seu registro, o usuário consegue adicionar skins de algumas armas em seu carrinho de compras (podendo adicioná-las apenas uma vez cada skin, visto que no Valorant o jogador só pode ter uma única skin de determinado modelo - por exemplo, não se podem ter duas Judges Glitchpop em uma mesma conta). Após inserir as suas skins no carrinho de compras, o usuário pode vê-las disposta em um grid, onde também é apresentado o valor total do carrinho em Valorant Points e em real (em uma cotação arbitrária escolhida por mim). Além disso, o usuário tem o poder de remover e inserir as skins que prefirir do carrinho. Por fim, quando estiver satisfeito, o usuário pode clicar em Finalizar Compraa, de modo que ele simule o recebimento das skins na sua conta e exiba uma mensagem apresentando o seu endereço para que ele receba brindes de Valorant.
 
 ## Link para o Site
-Para acessar o Mercado de Skins de Valorant, basta acessar este [link](https://matheusvtna.github.io/Skins-Market-Valorant/#store).
+Para acessar o Mercado de Skins de Valorant, basta acessar este [link](https://matheusvtna.github.io/Skins-Market-Valorant).
 
 
 ***
