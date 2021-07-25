@@ -27,49 +27,49 @@ function App() {
       image: frenzyClitchpop,
       category: "pistol",
       name: "Frenzy Glitchpop",
-      price: "1000"
+      price: 1000
     },
     {
       image: ghostSilence,
       category: "pistol",
       name: "Ghost Silencialmas",
-      price: "995"
+      price: 995
     },
     {
       image: sheriffJett,
       category: "pistol",
       name: "Sheriff Jett",
-      price: "300"
+      price: 300
     },
     {
       image: bulldogGlitchpop,
       category: "rifle",
       name: "Bulldog Glitchpop",
-      price: "3475"
+      price: 3475
     },
     {
       image: vandalColmeia,
       category: "rifle",
       name: "Vandal Colmeia",
-      price: "1500"
+      price: 1500
     },
     {
       image: vandalSublime,
       category: "rifle",
       name: "Vandal Sublime",
-      price: "2150"
+      price: 2150
     },
     {
       image: buckyDiversao,
       category: "shotgun",
       name: "Bucky Divertida",
-      price: "775"
+      price: 775
     },
     {
       image: judgeGlitchpop,
       category: "shotgun",
       name: "Judge Glitchpop",
-      price: "1720"
+      price: 1720
     }
   ]
 
@@ -251,6 +251,20 @@ function App() {
     setShowRegister(true)
   }
 
+  function getAmount() {
+    if(logged === "") {
+      return 0
+    }
+
+    let users = JSON.parse(localStorage.getItem('users') || "[]")
+    let index = users.findIndex(user => user.email === email)
+    let user = users[index]
+    let products = user.cart || []
+    
+    return products.reduce((acc, val) => (acc + val.price), 0)
+    
+  }
+
   return (
     <div className="root-page">
 
@@ -358,7 +372,7 @@ function App() {
           <Col className="justify-content-center" xs={12} sm={12} md={4}>
             <Form className='d-flex flex justify-content-center' style={{width:'100%'}}>            
               <Form.Control as="select" className="register-input" placeholder="Tipo de Arma" onChange={e => updateGuns(e.target.value)}>
-                <option value="all" >Todas as armas</option>
+                <option value="all" >Todas as Armas</option>
                 <option value="pistol" >Armas Leves</option>
                 <option value="shotgun">Escopetas</option>
                 <option value="rifle">Fuzis</option>
@@ -447,6 +461,31 @@ function App() {
               ))}
             </Row>
         </div>
+
+        <Row className="justify-content-end">
+          <div>
+            Valor Total em Valorant Points: {
+              <div className="d-flex flex-row justify-content-center text-right align-items-center">                       
+                <p className="mx-2 mb-0 title text-right" style={{color:"white"}}>{ getAmount() }</p>
+                <img 
+                  src={logo}
+                  style={{width: "16px", height: "16px"}}
+                />
+              </div>
+            }
+            
+            Valor Total em Reais: {
+              <div className="d-flex flex-row justify-content-center text-right align-items-center">                       
+              <p className="mx-2 mb-0 title text-right" style={{color:"white"}}>{(100*getAmount()).toLocaleString('pt-br', {minimumFractionDigits: 2}) + " Reais"}</p>
+            </div>
+            }
+              
+          </div>
+
+
+        </Row>
+
+
       </Container>
     </div>
 
