@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row, Form, FormControl, Carousel, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, Carousel, Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FiChevronDown, FiChevronUp, FiMapPin, FiPhone, FiMail, FiShoppingCart, FiShoppingBag, FiCheck } from 'react-icons/fi';
 import { FiTwitter, FiInstagram, FiGithub, FiLinkedin } from 'react-icons/fi';
 import { useState } from 'react';
