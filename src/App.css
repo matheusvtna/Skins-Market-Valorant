@@ -93,6 +93,13 @@
   color: white;
 }
 
+.skin-box {
+  background-color: #FC4854!important;
+  width: 0.1rem;
+  border-radius: 0.25rem;
+  border: 0;
+  padding: 0.5rem 0.5rem;
+}
 
 @keyframes App-logo-spin {
   from {

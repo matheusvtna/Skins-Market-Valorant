@@ -27,49 +27,49 @@ function App() {
       image: frenzyClitchpop,
       category: "pistol",
       name: "Frenzy Glitchpop",
-      price: "1000 Valorant Points"
+      price: "1000"
     },
     {
       image: ghostSilence,
       category: "pistol",
       name: "Ghost Silencialmas",
-      price: "995 Valorant Points"
+      price: "995"
     },
     {
       image: sheriffJett,
       category: "pistol",
       name: "Sheriff Jett",
-      price: "300 Valorant Points"
+      price: "300"
     },
     {
       image: bulldogGlitchpop,
       category: "rifle",
       name: "Bulldog Glitchpop",
-      price: "3475 Valorant Points"
+      price: "3475"
     },
     {
       image: vandalColmeia,
       category: "rifle",
       name: "Vandal Colmeia",
-      price: "1500 Valorant Points"
+      price: "1500"
     },
     {
       image: vandalSublime,
       category: "rifle",
       name: "Vandal Sublime",
-      price: "2150 Valorant Points"
+      price: "2150"
     },
     {
       image: buckyDiversao,
       category: "shotgun",
       name: "Bucky Divertida",
-      price: "775 Valorant Points"
+      price: "775"
     },
     {
       image: judgeGlitchpop,
       category: "shotgun",
       name: "Judge Glitchpop",
-      price: "1720 Valorant Points"
+      price: "1720"
     }
   ]
 
@@ -150,6 +150,8 @@ function App() {
     localStorage.setItem('users', JSON.stringify([...users, {name, email, password, country, state, city, street, cart: []}]));
     notifyOk("Parabéns, " + name + "! Você foi cadastrado com sucesso.")
     setShowRegister(false)
+
+    login()
 
     setName("")
     setEmail("")
@@ -381,7 +383,7 @@ function App() {
                       src={logo}
                       style={{width: "16px"}}
                     />
-                    <p>{skin.price}</p>
+                    <p>{skin.price + " Valorant Points"}</p>
                   </div>
                   <Button className="down-button mb-3" onClick={() => insertProduct(skin)}>
                     <Row className="mx-2 my-1 justify-content-center align-items-center">
@@ -412,19 +414,37 @@ function App() {
 
       <Container className="cart-container py-5" style={{color: '#0E1921'}}>
         <div id="cart" className="pt-5">
-            <h1 className="px-4 w-100 title text-left">
+            <h1 className="w-100 title text-left d-none d-lg-block">
               Carrinho de Skins
             </h1>
-            <Row className="justify-content-center">
-            <Col xs={6} sm={6} md={3}> {
+            <h1 className="w-100 title text-center d-lg-none" >
+              Carrinho de Skins
+            </h1>
+            
+            <Row className="mt-5"> {
               cart.map( skin => (
-                <img
-                  className="d-block w-100"
-                  src={skin.image}
-                  alt={skin.name}
-                />
-                ))}
-              </Col>
+                <Col xs={6} sm={6} md={3}>
+                  <div className='date-box mb-5'>
+                    <img
+                      className="d-block w-100"
+                      src={skin.image}
+                      alt={skin.name}
+                    />
+                    <h5 className="title text-center">
+                      {skin.name}
+                    </h5>
+            
+                    <div className="d-flex flex-row justify-content-center text-center align-items-center">                       
+                      <p className="mx-2 mb-0" style={{color:"white"}}>{skin.price}</p>
+                      <img 
+                        src={logo}
+                        style={{width: "16px", height: "16px"}}
+                      />
+                    </div>
+
+                  </div> 
+                </Col>
+              ))}
             </Row>
         </div>
       </Container>
