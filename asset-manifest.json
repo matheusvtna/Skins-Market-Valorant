@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/valorant-skins/static/css/main.340e350a.chunk.css",
+    "main.js": "/valorant-skins/static/js/main.1f950e00.chunk.js",
+    "main.js.map": "/valorant-skins/static/js/main.1f950e00.chunk.js.map",
+    "runtime-main.js": "/valorant-skins/static/js/runtime-main.b70f209a.js",
+    "runtime-main.js.map": "/valorant-skins/static/js/runtime-main.b70f209a.js.map",
+    "static/css/2.081f420c.chunk.css": "/valorant-skins/static/css/2.081f420c.chunk.css",
+    "static/js/2.8f6951a8.chunk.js": "/valorant-skins/static/js/2.8f6951a8.chunk.js",
+    "static/js/2.8f6951a8.chunk.js.map": "/valorant-skins/static/js/2.8f6951a8.chunk.js.map",
+    "static/js/3.f1eba58b.chunk.js": "/valorant-skins/static/js/3.f1eba58b.chunk.js",
+    "static/js/3.f1eba58b.chunk.js.map": "/valorant-skins/static/js/3.f1eba58b.chunk.js.map",
+    "index.html": "/valorant-skins/index.html",
+    "static/css/2.081f420c.chunk.css.map": "/valorant-skins/static/css/2.081f420c.chunk.css.map",
+    "static/css/main.340e350a.chunk.css.map": "/valorant-skins/static/css/main.340e350a.chunk.css.map",
+    "static/js/2.8f6951a8.chunk.js.LICENSE.txt": "/valorant-skins/static/js/2.8f6951a8.chunk.js.LICENSE.txt",
+    "static/media/BuckyDiversao.0bb918ce.png": "/valorant-skins/static/media/BuckyDiversao.0bb918ce.png",
+    "static/media/BulldogGlitchpop.e83d71b2.png": "/valorant-skins/static/media/BulldogGlitchpop.e83d71b2.png",
+    "static/media/FrenzyGlitchpop.105629ef.png": "/valorant-skins/static/media/FrenzyGlitchpop.105629ef.png",
+    "static/media/GhostSilence.b4ff53c2.png": "/valorant-skins/static/media/GhostSilence.b4ff53c2.png",
+    "static/media/JudgeGlitchpop.876e9497.png": "/valorant-skins/static/media/JudgeGlitchpop.876e9497.png",
+    "static/media/SheriffJett.ed26fa53.png": "/valorant-skins/static/media/SheriffJett.ed26fa53.png",
+    "static/media/App.css": "/valorant-skins/static/media/ValorantFont.86ec8370.ttf",
+    "static/media/VandalColmeia.ce33dc3c.png": "/valorant-skins/static/media/VandalColmeia.ce33dc3c.png",
+    "static/media/VandalSublime.385d7f8b.png": "/valorant-skins/static/media/VandalSublime.385d7f8b.png",
+    "static/media/backgroundLayer.612c0e6d.png": "/valorant-skins/static/media/backgroundLayer.612c0e6d.png",
+    "static/media/backgroundSquares.169b0529.png": "/valorant-skins/static/media/backgroundSquares.169b0529.png",
+    "static/media/titleFrame.09c3cc9e.png": "/valorant-skins/static/media/titleFrame.09c3cc9e.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b70f209a.js",
+    "static/css/2.081f420c.chunk.css",
+    "static/js/2.8f6951a8.chunk.js",
+    "static/css/main.340e350a.chunk.css",
+    "static/js/main.1f950e00.chunk.js"
+  ]
+}
